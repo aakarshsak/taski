@@ -1,23 +1,41 @@
-const getListOfTasks = (req, res) => {
-  res.send("All Items: Here");
-};
+const Task = require("../models/tasks");
+const asyncWrapper = require("../middleware/async-wrapper");
 
-const createTaskItem = (req, res) => {
-  console.log(req.body);
-  res.send(req.body);
-};
+const getListOfTasks = asyncWrapper(async (req, res) => {
+  const tasks = await Task.find({});
+  res.status(200).json({ tasks });
+});
 
-const getSingleTask = (req, res) => {
-  res.send("ID : " + req.params.id);
-};
+const createTaskItem = asyncWrapper(async (req, res) => {
+  const task = await Task.create(req.body);
+  res.status(201).json({ task });
+});
 
-const updateTaskItem = (req, res) => {
-  res.send({ id: req.params.id });
-};
+const getSingleTask = asyncWrapper(async (req, res) => {
+  const task = await Task.findOne({ _id: req.params.id });
+  console.log(req.params.id);
+  if (!task) res.status(404).json({ msg: "Id does not exist..." });
 
-const deleteTaskItem = (req, res) => {
-  res.send({ id: req.params.id });
-};
+  res.status(200).json({ task });
+});
+
+const updateTaskItem = asyncWrapper(async (req, res) => {
+  const task = await Task.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  if (!task) res.status(404).json({ msg: "Id does not exist..." });
+
+  res.status(200).json({ task });
+});
+
+const deleteTaskItem = asyncWrapper(async (req, res) => {
+  const task = await Task.findOneAndDelete({ _id: req.params.id });
+
+  if (!task) res.status(404).json({ msg: "Id does not exist..." });
+
+  res.status(200).json({ task });
+});
 
 module.exports = {
   getListOfTasks,

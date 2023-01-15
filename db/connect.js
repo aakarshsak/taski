@@ -1,11 +1,8 @@
 const { mongoose } = require("mongoose");
 
 const DBConnection = (url) => {
-  mongoose
-    .set("strictQuery", true)
-    .connect(url)
-    .then(() => console.log("Connected to db..."))
-    .catch((err) => console.log(err));
+  console.log(url);
+  return mongoose.set("strictQuery", true).connect(url);
 };
 
 module.exports = DBConnection;
