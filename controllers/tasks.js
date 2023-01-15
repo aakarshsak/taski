@@ -3,19 +3,20 @@ const getListOfTasks = (req, res) => {
 };
 
 const createTaskItem = (req, res) => {
-  res.send("Created Task Item...");
+  console.log(req.body);
+  res.send(req.body);
 };
 
 const getSingleTask = (req, res) => {
-  res.send("This is the single task you wanted...");
+  res.send("ID : " + req.params.id);
 };
 
 const updateTaskItem = (req, res) => {
-  res.send("Updated Task Item...");
+  res.send({ id: req.params.id });
 };
 
 const deleteTaskItem = (req, res) => {
-  res.send("Deleted Task Item...");
+  res.send({ id: req.params.id });
 };
 
 module.exports = {
