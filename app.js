@@ -7,6 +7,7 @@ const errorHandler = require("./middleware/error-handler");
 const DBConnection = require("./db/connect");
 
 //middleware
+app.use(express.static("./public"));
 app.use(express.json());
 
 app.use("/api/v1/tasks", tasks);
@@ -14,7 +15,7 @@ app.use("/api/v1/tasks", tasks);
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = 3917;
+const PORT = process.env.PORT || 3917;
 
 const start = async () => {
   try {
